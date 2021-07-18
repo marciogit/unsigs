@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.js": "/unsigs/static/js/main.df53dc03.chunk.js",
+    "main.js.map": "/unsigs/static/js/main.df53dc03.chunk.js.map",
+    "runtime-main.js": "/unsigs/static/js/runtime-main.5f8fe431.js",
+    "runtime-main.js.map": "/unsigs/static/js/runtime-main.5f8fe431.js.map",
+    "static/js/2.30a3c7ad.chunk.js": "/unsigs/static/js/2.30a3c7ad.chunk.js",
+    "static/js/2.30a3c7ad.chunk.js.map": "/unsigs/static/js/2.30a3c7ad.chunk.js.map",
+    "index.html": "/unsigs/index.html",
+    "static/js/2.30a3c7ad.chunk.js.LICENSE.txt": "/unsigs/static/js/2.30a3c7ad.chunk.js.LICENSE.txt",
+    "static/media/beer.7173f19f.png": "/unsigs/static/media/beer.7173f19f.png",
+    "static/media/flip-horizontal.a54f5015.svg": "/unsigs/static/media/flip-horizontal.a54f5015.svg",
+    "static/media/flip-vertical.51167982.svg": "/unsigs/static/media/flip-vertical.51167982.svg",
+    "static/media/loader.dcf85c08.png": "/unsigs/static/media/loader.dcf85c08.png",
+    "static/media/opensans-200.3d5923f9.ttf": "/unsigs/static/media/opensans-200.3d5923f9.ttf",
+    "static/media/opensans-300.17e98b9e.ttf": "/unsigs/static/media/opensans-300.17e98b9e.ttf",
+    "static/media/opensans-400.029b9bc9.ttf": "/unsigs/static/media/opensans-400.029b9bc9.ttf",
+    "static/media/opensans-600.043771c9.ttf": "/unsigs/static/media/opensans-600.043771c9.ttf",
+    "static/media/rotation.e7ad1693.svg": "/unsigs/static/media/rotation.e7ad1693.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5f8fe431.js",
+    "static/js/2.30a3c7ad.chunk.js",
+    "static/js/main.df53dc03.chunk.js"
+  ]
+}
