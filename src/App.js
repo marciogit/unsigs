@@ -83,7 +83,7 @@ function App() {
 							{randomImage > 100 && randomImage < 1000 && <div className="logo-image" style={{'backgroundImage':`url(https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/1024ds/00${randomImage}.png)`}}></div>}
 							{randomImage > 1000 && <div className="logo-image" style={{'backgroundImage':`url(https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/1024ds/0${randomImage}.png)`}}></div>}
 						</div>
-						<label htmlFor="">Paste your address and load your unsig_collection</label>
+						<label htmlFor="">Paste your address and load your unsigs_collection</label>
 						<form onSubmit={handleSubmit}>
 							<input type="text" ref={input} placeholder="your ada address..."/>
 							<button onClick={handleSubmit}>Load</button>

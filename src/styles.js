@@ -96,6 +96,9 @@ export default createGlobalStyle`
 				width: 100px;
 				height: 100px;
 				border-radius: 100%;
+				font-family: 'opensans light';
+				font-size: 13px;
+				text-align: center;
 
 				&:after {
 					content: "";
@@ -435,7 +438,8 @@ export const StartScreen = styled.div `
 		cursor: pointer;
 
 		&:hover {
-			background-color: #C9455C;
+			background-color: #1633AA;
+			color: #fff;
 		}
 	}
 `
