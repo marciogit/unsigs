@@ -1,0 +1,30 @@
+const Select = ({ values, onChange }) => {
+	return (
+		<select
+			className="control-field filter-field form-control"
+			onChange={onChange}
+			defaultValue={values[0]}>
+			{values.map((value, i) => (
+				<option key={i} value={value}>
+					{value}
+				</option>
+			))}
+		</select>
+	);
+};
+
+{/* 
+<label>Filter by props:</label>
+<Select
+	values={[0, 1, 2, 3, 4, 'all']}
+	onChange={e => setFilter({ ...filter, value: e.target.value })}
+/>
+*/}
+
+{/* {menuProps.map((item, i)=> (
+	<div 
+		onClick={()=> setMenuTop(i)} 
+		className={menuTop === i ? 'active' : '' + (unsigs.filter(item => item.metadata.unsigs.num_props === i).length < 1 ? ' disabled' : '')}>
+			{item === 0 ? 'all' : item  } {i}
+	</div>
+))} */}
