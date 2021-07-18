@@ -99,6 +99,7 @@ export default createGlobalStyle`
 				font-family: 'opensans light';
 				font-size: 13px;
 				text-align: center;
+				color: #fff;
 
 				&:after {
 					content: "";
