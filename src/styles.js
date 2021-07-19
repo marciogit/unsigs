@@ -48,10 +48,6 @@ export default createGlobalStyle`
 	}
 
 	html {
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-		/* user-select: none; */
 		position: relative;
 		line-height: 1.5;
 		color: #6e6e6e;
@@ -74,7 +70,7 @@ export default createGlobalStyle`
 		height: 100vh;
 		overflow: auto;
 
-		> div {
+		.wrapper {
 			position: relative;
 			display: table;
 			width: 100%;
@@ -139,34 +135,18 @@ export default createGlobalStyle`
 		}
 	}
 
-	.grid {
-		max-width: 1000px;
-	}
+	.grid { max-width: 1000px; }
 
 	.item {
 		z-index: 1;
 		cursor: pointer;
 
-		.muuri-item-positioning {
-			/* z-index: 2; */
-		}
-
+		.muuri-item-positioning { /* z-index: 2; */ }
 		.muuri-item-dragging,
-		.muuri-item-releasing {
-			/* z-index: 3; */
-		}
-
-		.muuri-item-dragging {
-			cursor: move;
-		}
-
-		.muuri-item-hidden {
-			/* z-index: 0; */
-		}
-
-		.w2 {
-			width: 100px;
-		}
+		.muuri-item-releasing 	{ /* z-index: 3; */ }
+		.muuri-item-dragging 	{ cursor: move;}
+		.muuri-item-hidden 		{ /* z-index: 0; */ }
+		.w2 					{ width: 100px; }
 	}
 
 	.item-content {
@@ -193,7 +173,7 @@ export default createGlobalStyle`
 					transform: rotateY(180deg);
 				}
 
-				> div {
+				div {
 					&.vertical {
 						position: relative;
 						transition: .3s;
@@ -296,14 +276,7 @@ export default createGlobalStyle`
 		user-select: auto;
 	}
 
-	.popup-overlay {
-		background: rgba(0, 0, 0, 0.5);
-	}
-
-	[data-popup="tooltip"].popup-overlay {
-		background: transparent;
-	}
-
+	.popup-overlay { background: rgba(0, 0, 0, 0.5); }
 
 	.modal {
 		.header {
@@ -318,7 +291,6 @@ export default createGlobalStyle`
 
 		.content {
 			width: 100%;
-			/* height: 230px; */
 			padding: 10px 5px;
 			font-family: 'opensans light';
 			font-size: 13px;
@@ -422,6 +394,10 @@ export const StartScreen = styled.div `
 		text-align: center;
 		border: 1px solid rgba(0,0,0,0.2);
 		border-radius: 5px;
+
+		@media (max-width: 420px) {
+			width: 90%;
+		}
 	}
 
 	button {
@@ -457,6 +433,8 @@ export const MenuContainer = styled.div `
 	padding: 10px;
 	background-color: #1633AA;
 	z-index: 4;
+
+
 
 	&:before {
 		content: "Unsigned_Collection_Explorer";
@@ -513,7 +491,7 @@ export const MenuContainer = styled.div `
 			right: 0px;
 			width: 40px;
 			height: 40px;
-			background-image: url(${beer});
+			background-image: url('https://img-premium.flaticon.com/png/512/737/premium/737994.png?token=exp=1626654843~hmac=5f191fe95fec89a1d789995c532acf2b');
 			background-position: center;
 			background-repeat: no-repeat;
 			background-size: 40px;
@@ -575,6 +553,7 @@ export const MenuContainer = styled.div `
 	}
 `
 
+
 export const MainContent = styled.div `
     position: absolute;
     top: 100px;
@@ -601,109 +580,3 @@ export const UnsigContainer = styled.div `
 	padding: 20px;
 	background-color: #f2f2f2;
 `
-
-export const UnsiCard = styled.div `
-	display: block;
-	float: left;
-	width: 158px;
-	height: 168px;
-	background-color: #fff;
-	border-radius: 10px;
-	cursor: pointer;
-	transition: .3s;
-
-	span {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 30px;
-		font-family: 'opensans light';
-		font-size: 13px;
-	}
-
-	img {
-		display: block;
-		width: 128px;
-		height: 128px;
-		margin: auto;
-		border-radius: 10px;
-		transition: .3s;
-	}
-
-	&.active, &:hover {
-		box-shadow: 0px 0px 20px -6px rgba(0,0,0,0.56);
-	}
-`
-
-export const UnsigSelected = styled.div`
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: 50px calc(46% - 50px) calc(46% - 50px) 50px;
-	align-items: flex-start;
-	justify-items: center;
-	float: left;
-	width: 650px;
-	height: 100%;
-	perspective: 1000px;
-	background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
-	overflow: hidden;
-
-	.buttons-container {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 50px;
-	}
-
-	.flip-vertical, .flip-horizontal, .rotate-button {
-		display: inline-block;
-		width: 40px;
-		height: 40px;
-		margin: 0 5px;
-		background-color: #fff;
-		border-radius: 100%;
-		background-repeat: no-repeat;
-		background-position: center;
-		cursor: pointer;
-	}
-
-	.flip-vertical {
-		background-image: url(${flipVertical});
-		background-size: 13px;
-	}
-
-	.flip-horizontal {
-		background-image: url(${flipHorizontal});
-		background-size: 20px;
-	}
-
-	.rotate-button {
-		background-image: url(${rotateIcon});
-		background-size: 20px;
-	}
-
-	.reset-position {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 40px;
-		height: 40px;
-		font-family: 'opensans bold';
-		font-size: 12px;
-		color: #000;
-		background-color: #fff;
-		border-radius: 100%;
-		cursor: pointer;
-	}
-
-	img {
-		display: block;
-		margin: 20px auto;
-		width: 77%;
-		border: 5px solid #1633AA;
-		border-radius: 10px;
-	}
-`
-

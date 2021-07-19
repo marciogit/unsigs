@@ -3,43 +3,24 @@ import React, { useState, useEffect, useContext, useMemo, useRef } from "react";
 import { MuuriComponent, getResponsiveStyle } from "muuri-react";
 import { useMediaQuery } from "react-responsive";
 import Popup from 'reactjs-popup';
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import axios from "axios";
 import GlobalStyle, { MenuContainer, StartScreen } from './styles';
+import { gradientBody } from './data';
 
 export const ThemeContext = React.createContext(null);
 
 // App.
 function App() {
-	const input = useRef(null);
 	const baseUrl = 'https://pool.pm/wallet/';
 	const [ wallet, setWallet ] = useState("");
+	const input = useRef(null);
+
 	const [ loading, setLoading ] = useState(wallet);
 	const [ unsigs, setUnsigs ] = useState([]);
 	const [ menuTop, setMenuTop ] = useState(0);
-	const [ gridColumns, setGridColumns ] = useState(false);
-	const [ isCopied, setIsCopied ] = useState(false);
+
 	const [ randomImage, setRandomImage ] = useState();
 	const [ randomBg, setRandomBg ] = useState(0);
-	const codeSnippet = `addr1qyd0v4rds0u7grhuzkpulvzd5npgdrq9z689qf3jt5eunwh2z343utptszdyuhuqktry3qsjtfrr0k3fqlz476xcpxhqsvy80p`;
-
-	const gradientBody = [
-		{ id:0 , 	color1: '#30cfd0', color2: '#330867' },
-		{ id:1 , 	color1: '#6a11cb', color2: '#2575fc' },
-		{ id:2 , 	color1: '#0ba360', color2: '#3cba92' },
-		{ id:3 , 	color1: '#801357', color2: '#e2c9cc' },
-		{ id:4 , 	color1: '#13547a', color2: '#80d0c7' },
-		{ id:5 , 	color1: '#434343', color2: '#000000' },
-		{ id:6 , 	color1: '#16a085', color2: '#f4d03f' },
-		{ id:7 , 	color1: '#AC32E4', color2: '#4801FF' },
-	];
-
-	const onCopyText = () => {
-		setIsCopied(true);
-		setTimeout(() => {
-			setIsCopied(false);
-		}, 2000);
-	};
 
 	const loadRandomLogo = () => {
 		const randomLogo = Math.floor(Math.random() * 10000);
@@ -62,26 +43,32 @@ function App() {
 			await axios
 			.get(baseUrl+wallet)
 			.then((res) => {
-				const newUnsig = res.data.tokens.filter(item => item.policy === '0e14267a8020229adc0184dd25fa3174c3f7d6caadcb4425c70e7c04')
-				setUnsigs(newUnsig);
+				setUnsigs(res.data.tokens.filter(item => item.policy === '0e14267a8020229adc0184dd25fa3174c3f7d6caadcb4425c70e7c04'));
 				setLoading(false);
 			})
 		}
+
 		loadData();
 		loadRandomLogo();
 	}, [wallet]);
 
 	return (
-		<div style={{'backgroundImage':`linear-gradient(0deg, ${gradientBody[randomBg].color1} 0%, ${gradientBody[randomBg].color2} 100%)`}}>
+		<div className="wrapper" style={{'backgroundImage':`linear-gradient(0deg, ${gradientBody[randomBg].color1} 0%, ${gradientBody[randomBg].color2} 100%)`}}>
 			<GlobalStyle/>
 			{!loadCollectionScreen ?
 				<StartScreen>
 					<div>
 						<div className="circle"></div>
 						<div className="image-container">
-							{randomImage < 100 && <div className="logo-image" style={{'backgroundImage':`url(https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/1024ds/000${randomImage}.png)`}}></div>}
-							{randomImage > 100 && randomImage < 1000 && <div className="logo-image" style={{'backgroundImage':`url(https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/1024ds/00${randomImage}.png)`}}></div>}
-							{randomImage > 1000 && <div className="logo-image" style={{'backgroundImage':`url(https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/1024ds/0${randomImage}.png)`}}></div>}
+							{randomImage < 100 &&
+								<div className="logo-image" style={{'backgroundImage':`url(https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/1024ds/000${randomImage}.png)`}}></div>
+							}
+							{randomImage > 100 && randomImage < 1000 &&
+								<div className="logo-image" style={{'backgroundImage':`url(https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/1024ds/00${randomImage}.png)`}}></div>
+							}
+							{randomImage > 1000 &&
+								<div className="logo-image" style={{'backgroundImage':`url(https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/1024ds/0${randomImage}.png)`}}></div>
+							}
 						</div>
 						<label htmlFor="">Paste your address and load your unsigs_collection</label>
 						<form onSubmit={handleSubmit}>
@@ -93,16 +80,20 @@ function App() {
 				:
 				<>
 				{loading ?
-					<div className="loader">
-						loading...
-					</div>
+					<div className="loader">loading...</div>
 					:
 					<>
 						<MenuContainer>
 							<div className="mini-logo">
-								{randomImage < 100 && <img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/000${randomImage}.png`} alt="logo"/>}
-								{randomImage > 100 && randomImage < 1000 && <img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/00${randomImage}.png`} alt="logo"/>}
-								{randomImage > 1000 &&  <img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/0${randomImage}.png`} alt="logo"/>}
+								{randomImage < 100 &&
+									<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/000${randomImage}.png`} alt="logo"/>
+								}
+								{randomImage > 100 && randomImage < 1000 &&
+									<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/00${randomImage}.png`} alt="logo"/>
+								}
+								{randomImage > 1000 &&
+									<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/0${randomImage}.png`} alt="logo"/>
+								}
 							</div>
 							<div>
 								<div className="menutop" style={{'width':'340px'}}>
@@ -127,24 +118,20 @@ function App() {
 								</div>
 							</div>
 
-							<Popup
-								trigger={<div className="beer"></div>}
-								modal
-								nested
-							>
+							<Popup trigger={<div className="beer"></div>} modal nested>
 								{close => (
-								<div className="modal">
-									<button className="close" onClick={close}>x</button>
-									<div className="header">Hello!</div>
-									<div className="content">
-										If you think this web app was helpful or simply liked it and <br />
-										feel like buying me a beer that would be great! no pressure though...<br /><br />
-										<span>My ADA address:</span> <br />
-										addr1qyd0v4rds0u7grhuzkpulvzd5npgdrq9z689qf3jt5eunwh2z343utptszdyuhuqktry3qsjtfrr0k3fqlz476xcpxhqsvy80p
-										<br /><br />
-										<a href="https://twitter.com/marcioseo" target="_blank" rel="noreferrer">👉 Twitter</a>
+									<div className="modal">
+										<button className="close" onClick={close}>x</button>
+										<div className="header">Hello!</div>
+										<div className="content">
+											If you think this web app was helpful or simply liked it and <br />
+											feel like buying me a beer that would be great! no pressure though...<br /><br />
+											<span>My ADA address:</span> <br />
+											addr1qyd0v4rds0u7grhuzkpulvzd5npgdrq9z689qf3jt5eunwh2z343utptszdyuhuqktry3qsjtfrr0k3fqlz476xcpxhqsvy80p
+											<br /><br />
+											<a href="https://twitter.com/marcioseo" target="_blank" rel="noreferrer">👉 Twitter</a>
+										</div>
 									</div>
-								</div>
 								)}
 							</Popup>
 						</MenuContainer>
@@ -157,7 +144,7 @@ function App() {
 									dragSortPredicate={{action: "swap"}}
 									dragSortHeuristics={{ sortInterval: 0 }}>
 										{unsigs.map((item, i)=>
-											<Item key={i} {...item} gridGag={gridColumns}/>
+											<Item key={i} {...item}/>
 										)}
 								</MuuriComponent>
 							}
@@ -242,7 +229,7 @@ function App() {
 	);
 };
 
-const ThemeProvider = ({ children, gridN }) => {
+const ThemeProvider = ({ children }) => {
 	const isBigScreen = useMediaQuery({ query: "(min-width: 824px)" });
 
 	const style = useMemo(() => {
@@ -258,7 +245,7 @@ const ThemeProvider = ({ children, gridN }) => {
 	);
 };
 
-const Item = ({ metadata, gridGag, selectIndex, unsigIndex, currentIndex }) => {
+const Item = ({ metadata }) => {
 	const style = useContext(ThemeContext);
 	const [ showTools, setShowTools ] = useState(false);
 	const [rotate, setRotate] = useState(0);

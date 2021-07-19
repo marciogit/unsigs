@@ -13,7 +13,7 @@ const Select = ({ values, onChange }) => {
 	);
 };
 
-{/* 
+{/*
 <label>Filter by props:</label>
 <Select
 	values={[0, 1, 2, 3, 4, 'all']}
@@ -22,9 +22,142 @@ const Select = ({ values, onChange }) => {
 */}
 
 {/* {menuProps.map((item, i)=> (
-	<div 
-		onClick={()=> setMenuTop(i)} 
+	<div
+		onClick={()=> setMenuTop(i)}
 		className={menuTop === i ? 'active' : '' + (unsigs.filter(item => item.metadata.unsigs.num_props === i).length < 1 ? ' disabled' : '')}>
 			{item === 0 ? 'all' : item  } {i}
 	</div>
 ))} */}
+
+
+export const MenuContainer = styled.div `
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: grid;
+	align-items: center;
+	justify-items: center;
+	width: 100%;
+	height: 100px;
+	padding: 10px;
+	background-color: #1633AA;
+	z-index: 4;
+
+
+
+	&:before {
+		content: "Unsigned_Collection_Explorer";
+		position: absolute;
+		top: 35px;
+		left: 60px;
+		font-family: 'opensans bold';
+		font-size: 20px;
+		color: #fff;
+	}
+
+	@keyframes rotation {
+		from   	{ transform: rotate(0deg); }
+		to 		{ transform: rotate(360deg); }
+	}
+
+	.mini-logo {
+		position: absolute;
+		top: 33px;
+		left: 25px;
+		width: 30px;
+		height: 30px;
+		border-radius: 100%;
+		overflow: hidden;
+		animation: rotation 30s infinite linear;
+
+		img {
+			width: 100%;
+		}
+	}
+
+	> div {
+		width: auto;
+		height: auto;
+	}
+
+	.beer {
+		display: inline-block;
+		position: absolute;
+		top: 30px;
+		right: 20px;
+		width: 200px;
+		height: 40px;
+		font-family: 'opensans light';
+		font-size: 12px;
+		color: #fff;
+		transition: .3s;
+		cursor: pointer;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			width: 40px;
+			height: 40px;
+			background-image: url(${beer});
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: 40px;
+			transition: .3s;
+		}
+
+		&:hover {
+			&:before {
+				transform: rotate(-30deg);
+			}
+		}
+	}
+
+	.menutop {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		align-self: center;
+  		justify-self: center;
+		float: left;
+		height: 40px;
+		margin: 0 5px;
+		font-family: 'opensans light';
+		font-size: 12px;
+		background-color: #fff;
+		border-radius: 5px;
+		padding: 0;
+
+		span {
+			display: inline-block;
+			font-family: 'opensans semibold';
+			margin: 0 5px 0 0;
+		}
+
+		> div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 30px;
+			height: 30px;
+			margin: 0 2px;
+			text-align: center;
+			border-radius: 100%;
+			cursor: pointer;
+			transition: .3s;
+
+			&.active {
+				background-color: #1633AA;
+				color: #fff;
+			}
+
+			&.disabled {
+				opacity: .4;
+				pointer-events: none;
+				text-decoration: line-through red;
+				border: 1px solid #888;
+			}
+		}
+	}
+`
