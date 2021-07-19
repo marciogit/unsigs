@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext, useMemo, useRef } from "react";
 import { MuuriComponent, getResponsiveStyle } from "muuri-react";
 import { useMediaQuery } from "react-responsive";
 import Popup from 'reactjs-popup';
-import axios from "axios";
+import { dataAPI } from './utils';
 import GlobalStyle, { MenuContainer, StartScreen } from './styles';
 import { gradientBody } from './data';
 
@@ -11,7 +11,6 @@ export const ThemeContext = React.createContext(null);
 
 // App.
 function App() {
-	const baseUrl = 'https://pool.pm/wallet/';
 	const [ wallet, setWallet ] = useState("");
 	const input = useRef(null);
 
@@ -40,8 +39,8 @@ function App() {
 	useEffect(() => {
 		async function loadData() {
 			setLoading(true);
-			await axios
-			.get(baseUrl+wallet)
+			dataAPI
+			.get(wallet)
 			.then((res) => {
 				setUnsigs(res.data.tokens.filter(item => item.policy === '0e14267a8020229adc0184dd25fa3174c3f7d6caadcb4425c70e7c04'));
 				setLoading(false);
@@ -84,20 +83,26 @@ function App() {
 					:
 					<>
 						<MenuContainer>
-							<div className="mini-logo">
-								{randomImage < 100 &&
-									<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/000${randomImage}.png`} alt="logo"/>
-								}
-								{randomImage > 100 && randomImage < 1000 &&
-									<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/00${randomImage}.png`} alt="logo"/>
-								}
-								{randomImage > 1000 &&
-									<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/0${randomImage}.png`} alt="logo"/>
-								}
-							</div>
 							<div>
-								<div className="menutop" style={{'width':'340px'}}>
-									<span>filter by props: </span>
+								<div className="mini-logo">
+									{randomImage < 100 &&
+										<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/000${randomImage}.png`} alt="logo"/>
+									}
+									{randomImage > 100 && randomImage < 1000 &&
+										<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/00${randomImage}.png`} alt="logo"/>
+									}
+									{randomImage > 1000 &&
+										<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/0${randomImage}.png`} alt="logo"/>
+									}
+
+									<div className="main-logo"></div>
+								</div>
+								<div className="main-logo">Unsigned_Collection_Explorer</div>
+							</div>
+
+							<div>
+								<div className="menutop">
+									<span>Props n&deg;:</span>
 									<div onClick={()=> setMenuTop(0)} className={menuTop === 0 ? 'active' : '' + (unsigs.filter(item => item.metadata.unsigs.num_props).length < 1 ? ' disabled' : '')}>all</div>
 									<div onClick={()=> setMenuTop(1)} className={menuTop === 1 ? 'active' : '' + (unsigs.filter(item => item.metadata.unsigs.num_props === 1).length < 1 ? ' disabled' : '')}>1</div>
 									<div onClick={()=> setMenuTop(2)} className={menuTop === 2 ? 'active' : '' + (unsigs.filter(item => item.metadata.unsigs.num_props === 2).length < 1 ? ' disabled' : '')}>2</div>
@@ -107,7 +112,7 @@ function App() {
 									<div onClick={()=> setMenuTop(6)} className={menuTop === 6 ? 'active' : '' + (unsigs.filter(item => item.metadata.unsigs.num_props === 6).length < 1 ? ' disabled' : '')}>6</div>
 								</div>
 
-								<div className="menutop" style={{'width':'100px'}}>
+								<div className="menutop">
 									<span>total: </span>
 									{menuTop === 0 &&
 										<>{unsigs.filter(item => item.metadata.unsigs.num_props).length}</>
@@ -118,22 +123,24 @@ function App() {
 								</div>
 							</div>
 
-							<Popup trigger={<div className="beer"></div>} modal nested>
-								{close => (
-									<div className="modal">
-										<button className="close" onClick={close}>x</button>
-										<div className="header">Hello!</div>
-										<div className="content">
-											If you think this web app was helpful or simply liked it and <br />
-											feel like buying me a beer that would be great! no pressure though...<br /><br />
-											<span>My ADA address:</span> <br />
-											addr1qyd0v4rds0u7grhuzkpulvzd5npgdrq9z689qf3jt5eunwh2z343utptszdyuhuqktry3qsjtfrr0k3fqlz476xcpxhqsvy80p
-											<br /><br />
-											<a href="https://twitter.com/marcioseo" target="_blank" rel="noreferrer">👉 Twitter</a>
+							<div>
+								<Popup trigger={<div className="beer"></div>} modal nested>
+									{close => (
+										<div className="modal">
+											<button className="close" onClick={close}>x</button>
+											<div className="header">Hello!</div>
+											<div className="content">
+												If you think this web app was helpful or simply liked it and <br />
+												feel like buying me a beer that would be great! no pressure though...<br /><br />
+												<span>My ADA address:</span> <br />
+												addr1qyd0v4rds0u7grhuzkpulvzd5npgdrq9z689qf3jt5eunwh2z343utptszdyuhuqktry3qsjtfrr0k3fqlz476xcpxhqsvy80p
+												<br /><br />
+												<a href="https://twitter.com/marcioseo" target="_blank" rel="noreferrer">👉 Twitter</a>
+											</div>
 										</div>
-									</div>
-								)}
-							</Popup>
+									)}
+								</Popup>
+							</div>
 						</MenuContainer>
 
 						<ThemeProvider>

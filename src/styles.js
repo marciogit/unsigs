@@ -8,8 +8,8 @@ import openSans600 from './fonts/opensans-600.ttf';
 import flipHorizontal 	from './images/flip-horizontal.svg';
 import flipVertical 	from './images/flip-vertical.svg';
 import rotateIcon 		from './images/rotation.svg';
-import beer 			from './images/beer.png';
 import Loader 			from './images/loader.png';
+import BeerImg 			from './images/beer.png';
 
 export default createGlobalStyle`
 	@font-face {
@@ -270,7 +270,7 @@ export default createGlobalStyle`
 	.popup-content {
 		margin: auto;
 		background: #fff;
-		width: 50%;
+		width: 53%;
 		padding: 5px;
 		border-radius: 10px;
 		user-select: auto;
@@ -426,6 +426,8 @@ export const MenuContainer = styled.div `
 	top: 0;
 	left: 0;
 	display: grid;
+	grid-template-columns: 372px auto 40px;
+	grid-row: 100px;
 	align-items: center;
 	justify-items: center;
 	width: 100%;
@@ -434,74 +436,67 @@ export const MenuContainer = styled.div `
 	background-color: #1633AA;
 	z-index: 4;
 
-
-
-	&:before {
-		content: "Unsigned_Collection_Explorer";
-		position: absolute;
-		top: 35px;
-		left: 60px;
-		font-family: 'opensans bold';
-		font-size: 20px;
-		color: #fff;
-	}
-
-	@keyframes rotation {
-		from   	{ transform: rotate(0deg); }
-		to 		{ transform: rotate(360deg); }
-	}
-
-	.mini-logo {
-		position: absolute;
-		top: 33px;
-		left: 25px;
-		width: 30px;
-		height: 30px;
-		border-radius: 100%;
-		overflow: hidden;
-		animation: rotation 30s infinite linear;
-
-		img {
-			width: 100%;
-		}
+	@media (max-width: 414px) {
 	}
 
 	> div {
-		width: auto;
-		height: auto;
+		position: relative;
+		width: 100%;
+		height: 100%;
+
+		&:nth-child(2) {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+		}
+
+		.main-logo {
+			position: absolute;
+			top: 25px;
+			left: 60px;
+			font-family: 'opensans bold';
+			font-size: 20px;
+			color: #fff;
+		}
+
+		@keyframes rotation {
+			from   	{ transform: rotate(0deg); }
+			to 		{ transform: rotate(360deg); }
+		}
+
+		.mini-logo {
+			position: absolute;
+			top: 23px;
+			left: 25px;
+			width: 30px;
+			height: 30px;
+			border-radius: 100%;
+			overflow: hidden;
+			animation: rotation 30s infinite linear;
+
+			img {
+				width: 100%;
+			}
+		}
 	}
 
 	.beer {
 		display: inline-block;
 		position: absolute;
-		top: 30px;
-		right: 20px;
-		width: 200px;
+		top: 15px;
+		right: 0px;
+		width: 40px;
 		height: 40px;
-		font-family: 'opensans light';
-		font-size: 12px;
-		color: #fff;
 		transition: .3s;
 		cursor: pointer;
-
-		&:before {
-			content: '';
-			position: absolute;
-			top: 0px;
-			right: 0px;
-			width: 40px;
-			height: 40px;
-			background-image: url('https://img-premium.flaticon.com/png/512/737/premium/737994.png?token=exp=1626654843~hmac=5f191fe95fec89a1d789995c532acf2b');
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: 40px;
-			transition: .3s;
-		}
+		background-image: url(${BeerImg});
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: 40px;
+		transition: .3s;
 
 		&:hover {
-			&:before {
-				transform: rotate(-30deg);
-			}
+			transform: rotate(-30deg);
 		}
 	}
 
@@ -509,8 +504,6 @@ export const MenuContainer = styled.div `
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		align-self: center;
-  		justify-self: center;
 		float: left;
 		height: 40px;
 		margin: 0 5px;
@@ -519,6 +512,9 @@ export const MenuContainer = styled.div `
 		background-color: #fff;
 		border-radius: 5px;
 		padding: 0;
+
+		&:nth-child(1) { width: 340px }
+		&:nth-child(2) { width: 100px }
 
 		span {
 			display: inline-block;
