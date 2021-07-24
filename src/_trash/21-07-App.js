@@ -1,27 +1,15 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 /* React */
-import React, { useState, useEffect, useRef } from "react";
-import { MuuriComponent, getResponsiveStyle, getStaticStyle, useGrid, useDrag, useRefresh } from "muuri-react";
+import React, { useState, useEffect, useContext, useMemo, useRef } from "react";
+import { MuuriComponent, getResponsiveStyle } from "muuri-react";
 import { useMediaQuery } from "react-responsive";
 import Popup from 'reactjs-popup';
 import { dataAPI } from './utils';
 import GlobalStyle, { MenuContainer, StartScreen } from './styles';
-import { Form, Select, Popover, Switch } from 'antd';
-import { useBetween } from "use-between";
+import { Form, Select } from 'antd';
 import 'antd/dist/antd.css';
 const { Option } = Select;
 
 export const ThemeContext = React.createContext(null);
-const useShareableState = () => {
-	const [ newSwitch, setNewSwitch ] = useState(false);
-	const [ gridColumns, setGridColumns ] = useState(8);
-	return {
-		newSwitch,
-		setNewSwitch,
-		gridColumns,
-		setGridColumns
-	};
-};
 
 // App.
 function App() {
@@ -41,12 +29,6 @@ function App() {
 	}
 
 	const [ loadCollectionScreen, setCollectionScreen ] = useState(false);
-	const { newSwitch, setNewSwitch, setGridColumns } = useBetween(useShareableState);
-
-	function onChange(checked) {
-		setNewSwitch(!newSwitch);
-		console.log(`${checked}` + "---" + newSwitch);
-	}
 
 	function handleSubmit(event) {
 		event.preventDefault();
@@ -59,7 +41,7 @@ function App() {
 		}
 	}
 
-	const selectChange = (value) => {
+	const handleChange = (value) => {
 		switch (value) {
 			case 'all': setMenuTop(0); break;
 			case '01 props': setMenuTop(1); break;
@@ -70,16 +52,7 @@ function App() {
 			case '06 props': setMenuTop(6); break;
 			default: break;
 		}
-	}
-
-	const selectChangeGrid = (value) => {
-		switch (value) {
-			case '8': setGridColumns(8); break;
-			case '7': setGridColumns(7); break;
-			case '6': setGridColumns(6); break;
-			case '5': setGridColumns(5); break;
-			default: break;
-		}
+		console.log(value)
 	}
 
 	useEffect(() => {
@@ -96,17 +69,6 @@ function App() {
 		loadData();
 		loadRandomLogo();
 	}, [wallet]);
-
-	const content = (
-		<div>
-			<p>
-				<a href="https://iohk.zendesk.com/hc/en-us/articles/360010477394-Send-and-receive-ada" target="_blank" rel="noreferrer">Daedalus</a>
-			</p>
-			<p>
-				<a href="https://yoroi-wallet.com/#/faq/2" target="_blank" rel="noreferrer">Yoroi</a>
-			</p>
-		</div>
-	  );
 
 	return (
 		<div className="wrapper">
@@ -126,18 +88,15 @@ function App() {
 						{randomImage > 1000 &&
 							<img src={`https://s3-ap-northeast-1.amazonaws.com/unsigs.com/images/256/0${randomImage}.png`} alt="logo"/>
 						}
+
 						<div className="main-logo"></div>
 					</div>
 					<div className="main-logo">Unsigs_Explorer</div>
 				</div>
 
 				<div>
-					<Form.Item label="Filter by props n&deg;:"/>
-					<Form.Item label="Grid Columns:"/>
-					<Form.Item label="Grid Padding:"></Form.Item>
-					<Form.Item label="Total:"/>
-
-					<Select defaultValue={unsigs.length > 0 ? "" : "all"} disabled={unsigs.length > 0 ? false : true} style={{ width: 120 }} onChange={selectChange}>
+					<Form.Item label="Filter by props n&deg;:">
+					<Select defaultValue="" style={{ width: 120 }} onChange={handleChange}>
 						<Option value="all" 	 disabled={(unsigs.filter(item => item.metadata.unsigs.num_props).length < 1 ? true : false)}>All</Option>
 						<Option value="01 prop"  disabled={(unsigs.filter(item => item.metadata.unsigs.num_props === 1).length < 1 ? true : false)}>01 prop</Option>
 						<Option value="02 props" disabled={(unsigs.filter(item => item.metadata.unsigs.num_props === 2).length < 1 ? true : false)}>02 props</Option>
@@ -146,17 +105,10 @@ function App() {
 						<Option value="05 props" disabled={(unsigs.filter(item => item.metadata.unsigs.num_props === 5).length < 1 ? true : false)}>05 props</Option>
 						<Option value="06 props" disabled={(unsigs.filter(item => item.metadata.unsigs.num_props === 6).length < 1 ? true : false)}>06 props</Option>
 					</Select>
-
-					<Select defaultValue={8} disabled={unsigs.length > 0 ? false : true} style={{ width: 60 }} onChange={selectChangeGrid}>
-						<Option value="8">8</Option>
-						<Option value="7">7</Option>
-						<Option value="6">6</Option>
-						<Option value="5">5</Option>
-					</Select>
-
-					<Switch defaultChecked disabled={unsigs.length > 0 ? false : true} style={{ width: 40 }} onChange={onChange}/>
+					</Form.Item>
 
 					<div className="menutop">
+						<span>total: </span>
 						{menuTop === 0 &&
 							<>{unsigs.filter(item => item.metadata.unsigs.num_props).length}</>
 						}
@@ -167,10 +119,7 @@ function App() {
 				</div>
 
 				<div>
-					<Popover placement="bottom" content={content} trigger="click">
-						<a href="#" rel="noreferrer">Finding you address</a>
-					</Popover>
-
+					<a href="https://iohk.zendesk.com/hc/en-us/articles/360010477394-Send-and-receive-ada" target="_blank" rel="noreferrer">How to find your ₳da address?</a>
 					<Popup trigger={<a href="#" rel="noreferrer">Beer time?</a>} modal nested>
 						{close => (
 							<div className="modal">
@@ -208,7 +157,7 @@ function App() {
 						</div>
 						<label htmlFor="">Unsigs_Explorer</label>
 						<form onSubmit={handleSubmit}>
-							<input className={inputError ? "error" : ""} type="text" ref={input} placeholder={inputError ? "please provide a valid address" : "₳da address"}/>
+							<input className={inputError ? "error" : ""} type="text" ref={input} value="addr1q8s4m2knmfqg0ql54pq5fxrpyw7klf9k3lp6jz32xz4khuhzt50t3gkw5px9hvn85pzmzt4xxk3k3aqyfsm7vtmydgeqr8m5ja" placeholder={inputError ? "please provide a valid address" : "₳da address"}/>
 							<button onClick={handleSubmit}>Load</button>
 						</form>
 					</div>
@@ -313,13 +262,23 @@ function App() {
 };
 
 const ThemeProvider = ({ children }) => {
+	const isBigScreen = useMediaQuery({ query: "(min-width: 824px)" });
+
+	const style = useMemo(() => {
+		return getResponsiveStyle({
+			columns: isBigScreen ? 1 / 8 : 1 / 3,
+			margin: "0",
+			ratio: 1
+		});
+	}, [isBigScreen]);
+
 	return (
-		<ThemeContext.Provider>{children}</ThemeContext.Provider>
+		<ThemeContext.Provider value={style}>{children}</ThemeContext.Provider>
 	);
 };
 
 const Item = ({ metadata }) => {
-
+	const style = useContext(ThemeContext);
 	const [ showTools, setShowTools ] = useState(false);
 	const [rotate, setRotate] = useState(0);
 
@@ -328,20 +287,6 @@ const Item = ({ metadata }) => {
 
 	const [ flipVertical, setFlipVertical ] = useState(false);
 	const toggleFlipVertical = () => setFlipVertical(!flipVertical);
-
-	const { newSwitch, gridColumns } = useBetween(useShareableState);
-
-	const isBigScreen = useMediaQuery({ query: "(min-width: 824px)" });
-	const { grid } = useGrid();
-	const isDragging = useDrag();
-	const columns = isBigScreen ? 1 / gridColumns : 1 / 3;
-	const ratio = 1;
-
-	useRefresh([gridColumns]);
-
-	const style = !isDragging
-		? getResponsiveStyle({columns, ratio})
-		: getStaticStyle({grid, columns, ratio});
 
 	const rotateR = () => {
 		if(flipHorizontal === true) {
@@ -354,7 +299,7 @@ const Item = ({ metadata }) => {
 
 	return (
 		<div style={style}>
-			<div className={"item-content "} style={!newSwitch ? {"margin":"5px"} : {"margin":"0px"}} onMouseOver={()=>setShowTools(true)} onMouseLeave={()=>setShowTools(false)}>
+			<div className={"item-content "} onMouseOver={()=>setShowTools(true)} onMouseLeave={()=>setShowTools(false)}>
 				{/* image */}
 				<div className={'horizontal ' + (!flipHorizontal ? '' : 'active')}>
 					<div className={'vertical ' + (!flipVertical ? '' : 'active')}>
