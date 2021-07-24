@@ -168,7 +168,7 @@ function App() {
 
 				<div>
 					<Popover placement="bottom" content={content} trigger="click">
-						<a href="#" rel="noreferrer">Finding you address</a>
+						<a href="#" rel="noreferrer">Finding your address</a>
 					</Popover>
 
 					<Popup trigger={<a href="#" rel="noreferrer">Beer time?</a>} modal nested>
